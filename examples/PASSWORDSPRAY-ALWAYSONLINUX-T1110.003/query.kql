@@ -1,0 +1,72 @@
+// PASSWORDSPRAY-ALWAYSONLINUX-T1110.003
+//
+// DETECTION QUERY (deployed rule SOC-BUILD-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003)
+// Recovered 2026-09-25 and reproduced verbatim below.
+// Version reference: [FILL IN]
+// Rule settings supply the window: runs every 1 hour over the previous 1 hour.
+//
+// Observations from the v3 conformance review:
+//   - Counts failed logons only, per host (by DeviceName). Fires at 8 or more
+//     distinct accounts.
+//   - No time filter in the query itself; it relies on the rule's 1-hour lookback.
+//     Run ad hoc, it covers whatever time range is selected.
+//   - TopSource is SourceList[0]. make_set() does not guarantee order, so this
+//     is an arbitrary source, not the most frequent one. The IP entity maps to it.
+//   - AccountList and SourceList are capped at 20 entries each. The 2026-07-19
+//     case tried 38 accounts, so its account list would have been truncated.
+//   - No exclusion for private or in-VNet sources, so the in-VNet Tenable scanner's
+//     failures count toward the threshold. The playbook handles this at triage.
+//   - AccountName is not checked for empty values; an empty name counts as one
+//     distinct account.
+
+DeviceLogonEvents
+| where ActionType == "LogonFailed"
+| where DeviceName startswith "linux-target-1"
+| summarize
+    Attempts=count(),
+    Accounts=dcount(AccountName),
+    Sources=dcount(RemoteIP),
+    AccountList=make_set(AccountName, 20),
+    SourceList=make_set(RemoteIP, 20),
+    TimeGenerated=max(TimeGenerated)
+  by DeviceName
+| where Accounts >= 8
+| extend TopSource = tostring(SourceList[0])
+| extend ShortHost = tostring(split(DeviceName, ".")[0]);
+
+// VERIFICATION QUERIES, v1 (HISTORICAL)
+// From playbook v1, Block 5. Both were run 2026-07-12 over a seven-day window.
+// Known defects (corrected in playbook v2, which scopes both queries to the
+// case host and time window):
+//   - Neither query filters on the affected host; both aggregate by RemoteIP
+//     across every host, so unrelated hosts and accounts can combine.
+//   - Query B does not check that a success came after the attempts.
+
+// Query A (v1): spray shape and attempts-per-account ratio, all hosts.
+// Observed 2026-07-12: 142 external attacking IPs across seven days.
+DeviceLogonEvents
+| where Timestamp > ago(7d)
+| where ActionType == "LogonFailed"
+| where not(ipv4_is_private(RemoteIP)) and isnotempty(RemoteIP)
+| summarize FailedAttempts = count(), AccountsTried = dcount(AccountName),
+            FirstSeen = min(Timestamp), LastSeen = max(Timestamp) by RemoteIP
+| where FailedAttempts > 20
+| extend AttemptsPerAccount = round(FailedAttempts * 1.0 / AccountsTried, 1)
+| sort by FailedAttempts desc;
+
+// Query B (v1): external sources with at least one successful logon, all hosts.
+// Observed 2026-07-12: 64 external IPs with at least one success.
+// It filters on Successes > 0 with no requirement for preceding failures, so it
+// CAN return successes without failures. It cannot establish how credentials
+// were obtained, that a success was malicious, or that it followed the attempts.
+DeviceLogonEvents
+| where Timestamp > ago(7d)
+| summarize Failures  = countif(ActionType == "LogonFailed"),
+            Successes = countif(ActionType == "LogonSuccess"),
+            Accounts  = dcount(AccountName) by RemoteIP
+| where not(ipv4_is_private(RemoteIP)) and isnotempty(RemoteIP)
+| where Successes > 0
+| sort by Failures desc
+
+// VERIFICATION QUERIES, v2 (DRAFT, NOT YET RUN)
+// See PB-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003-v2.md, Block 5.

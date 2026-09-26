@@ -9,10 +9,10 @@
 | Detection ID | PASSWORDSPRAY-ALWAYSONLINUX-T1110.003 |
 | Live rule name | SOC-BUILD-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003 |
 | Builder | Jenna Frank (detection builder) |
-| Date claimed | [FILL IN] |
-| Owner | [FILL IN] |
+| Date claimed | Not recorded at build time. |
+| Owner | Not recorded at build time. |
 | Status | Active since 2026-07-18 |
-| Version | [FILL IN: query version] |
+| Version | Not recorded at build time. |
 
 ## Behavior and scope
 
@@ -37,12 +37,12 @@
 
 | Field | Entry |
 |---|---|
-| Query | [query.kql](query.kql): deployed query recovered 2026-09-25; version reference [FILL IN] |
+| Query | [query.kql](query.kql): deployed query recovered 2026-09-25; version reference not recorded at build time |
 | Baseline and threshold | [baseline-and-threshold.md](baseline-and-threshold.md) |
 | Test results | Historical backtest recorded; lab replay, threshold-edge and data tests not recorded. See the [conformance review](v3-conformance-review.md). |
 | Playbook | [v1 (historical)](PB-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003-v1.md); [v2 (draft)](PB-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003-v2.md) |
 | First genuine detection | 2026-07-19, `linux-target-1`: 101 attempts, 38 distinct accounts, 12 source addresses |
-| Outstanding requests | [FILL IN] |
+| Outstanding requests | Not recorded at build time. |
 
 ## Rule settings (as deployed)
 
@@ -57,4 +57,4 @@
 | Query outputs | DeviceName, Attempts, Accounts, Sources, AccountList (max 20), SourceList (max 20), TimeGenerated, TopSource, ShortHost |
 | Grouping key | Host. Source addresses are context, not the grouping key. |
 | Severity | Medium |
-| Suppression, reopen, automated response | [FILL IN] |
+| Suppression, reopen, automated response | Not recorded at build time. |

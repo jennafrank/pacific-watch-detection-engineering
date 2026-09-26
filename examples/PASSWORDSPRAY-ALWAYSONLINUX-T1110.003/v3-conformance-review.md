@@ -55,7 +55,7 @@ This is a **historical detection review with incomplete evidence**. The rule was
 | Data and context tests (delayed, missing, duplicate records) | Not recorded | |
 | Retest after tuning | Not recorded | A "tuned rule" fired on 2026-07-18, so tuning happened. Retest results are not recorded. |
 | Noise assessed with reviewed outcomes and sample size | Not recorded | The `SOC - Disposition` field was created 2026-07-18, so outcomes before then were not captured through it. |
-| Queue capacity (3 to 5 per day, retune above 10) | Partially met | 16 alerts in 48 hours, about 8 per day: inside the 1 to 10 review band and below the retune point, above the 3 to 5 target. The window's dates are not recorded. |
+| Queue capacity (3 to 5 per day, retune above 10) | Not recorded | This rule's observation window: not recorded at build time. For card-built rules generally, see the 2026-09-25 to 09-26 measurement [below](#other-rules-observed-under-the-card-2026-09-25-to-09-26-utc). |
 
 ## 05. Configure and enrich
 
@@ -79,7 +79,7 @@ This is a **historical detection review with incomplete evidence**. The rule was
 | Requirement | Grade | Evidence |
 |---|---|---|
 | At least 48 hours of unchanged observation | **Not met** | The planned 48-hour alerts-only bake was shortened so the pipeline could be validated end to end. The Logic App was connected on 2026-07-18, the deployment day. |
-| Release review items (volume, alert contents, title, readiness) | Partially met | Alert contents shown by SOCOPS-320. Volume: 16 alerts in 48 hours, reviewed outcomes not recorded. Title review not recorded. |
+| Release review items (volume, alert contents, title, readiness) | Partially met | Alert contents shown by SOCOPS-320. Volume and title review not recorded. |
 | Independent query review by a second analyst | Not recorded | No reviewer, date, findings or fixes. |
 | Register complete | Not met | Query text, baseline dates and test results are missing. |
 | Naming pattern | Partially met | The rule name matches `SOC-BUILD-<TECHNIQUE>-<SCOPE>-<TID>` and the playbook ID matches `PB-<Detection ID>`. The source document is titled PB-SOC-001, an older ID. |
@@ -125,14 +125,34 @@ This is a **historical detection review with incomplete evidence**. The rule was
 
 ---
 
+## Other rules observed under the card, 2026-09-25 to 09-26 UTC
+
+Not graded above; recorded here as open findings so they are not hidden. 17 alerts across 6 rules, 2026-09-25 to 09-26 UTC (09-26 partial), 1 host per alert:
+
+| Rule | Alerts |
+|---|---|
+| DEFEVADE-REGMOD-T1112 | 9 |
+| INGRESSTOOLTRANSFER | 3 (2 hosts) |
+| IMPACT-RANSOMNOTE-T1491.001 | 2 |
+| NETWORKSERVICEDISCOVERY | 1 |
+| PERSIST-RUNKEY-T1547.001 | 1 |
+| DISCOVERY-ACCTENUM-T1087 | 1 |
+
+**Open findings**
+
+1. **DEFEVADE-REGMOD-T1112 fired 9 times on 2026-09-25.** That is above the card's 3 to 5 alerts per rule per day target and below the retune threshold of 10. It needs a volume and outcome review.
+2. **NETWORKSERVICEDISCOVERY and INGRESSTOOLTRANSFER break the v3 naming pattern.** Their names carry no technique ID, and they use an em dash separator. The card requires `SOC-BUILD-<TECHNIQUE>-<SCOPE>-<TID>` with hyphens only.
+
+---
+
 ## Summary
 
 | Grade | Count |
 |---|---|
 | Met | 18 |
-| Partially met | 26 |
+| Partially met | 25 |
 | Not met | 2 |
-| Not recorded | 19 |
+| Not recorded | 20 |
 | **Total requirements graded** | **65** |
 
 What the record does show: the rule was scoped to a named always-on asset, built on the table that actually carries this data, and set from a measured spike. The recovered query follows the local query rules and returns one row per host, but maps its IP entity to an arbitrary source, caps its evidence lists at 20 without recording it, and has no scanner exclusion. What the record cannot show is whether the rule works as intended, because the baseline dates and test evidence are missing. The review also found defects in the analyst guidance: verification queries that do not isolate the case, an inaccurate statement of Query B's limits, conflicting promotion instructions, and a spraying conclusion stated more firmly than the evidence allows. [Playbook v2](PB-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003-v2.md) is a draft correction; it has not been retested.
@@ -146,7 +166,7 @@ What the record does show: the rule was scoped to a named always-on asset, built
 5. **Run the missing detection tests** and record them: an authorized lab replay of a spray, a replay of the look-alikes (guessing and the scanner), threshold edges at 7, 8 and 9 accounts, and delayed or duplicate record checks.
 6. **Write an evidence record** for the lab test using the v3 template.
 7. **Map Host with FullName**, and add an Account mapping only if the query returns a valid single value.
-8. **Rerun as SOC-TEST** for at least 48 unchanged hours with test incidents kept out of Jira, and record daily alert counts against the 3 to 5 per day target (the recorded 16 alerts in 48 hours is about 8 per day), with reviewed outcomes for each.
+8. **Rerun as SOC-TEST** for at least 48 unchanged hours with test incidents kept out of Jira, and record daily alert counts against the 3 to 5 per day target with reviewed outcomes for each.
 9. **Get an independent query review**: a second analyst reruns the query and tests, with reviewer, date, findings and fixes recorded.
 10. **Release through the named authority** with a recorded approval date, confirm the first live alert reaches Jira once, and document the rollback method.
 11. **Test the playbook** under 60 seconds on a real case and with a second analyst on a different case, then complete the Process & Documentation, Operations Lead and index reviews.

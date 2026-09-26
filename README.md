@@ -14,7 +14,7 @@ This is the Detection Build Card (v3.0) that I wrote for Pacific Watch, an advis
 
 ## Worked example
 
-[PASSWORDSPRAY-ALWAYSONLINUX-T1110.003](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/) was the first production Pacific Watch detection, built in July 2026 under v2 of the card. It is presented as a **historical detection review with incomplete evidence**: the baseline dates and test evidence are missing (the deployed query was recovered during the review), and the [v3 conformance review](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/v3-conformance-review.md) says so rather than filling the gaps. The review grades 65 requirements (18 met, 26 partially met, 2 not met, 19 not recorded) and found defects in my own playbook and query. The historical version stays as it was; a [corrected draft](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/PB-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003-v2.md) and a [record of what changed and why](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/README.md#what-changed-from-v1-to-v2) sit beside it. The retest is still to come.
+[PASSWORDSPRAY-ALWAYSONLINUX-T1110.003](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/) was the first production Pacific Watch detection, built in July 2026 under v2 of the card. It is presented as a **historical detection review with incomplete evidence**: the baseline dates and test evidence are missing (the deployed query was recovered during the review), and the [v3 conformance review](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/v3-conformance-review.md) says so rather than filling the gaps. The review grades 65 requirements (18 met, 25 partially met, 2 not met, 20 not recorded) and found defects in my own playbook and query. The historical version stays as it was; a [corrected draft](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/PB-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003-v2.md) and a [record of what changed and why](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/README.md#what-changed-from-v1-to-v2) sit beside it. The retest is still to come.
 
 ## The lifecycle
 
@@ -42,12 +42,14 @@ flowchart TD
 
 ## Why it exists
 
-Early unthresholded test rules generated roughly 286 to 293 alerts per day from Jul 12 to 15, 2026, and 316 Jira cases, which buried real signal. The card adds controls intended to prevent a repeat:
+One unthresholded test rule (`SOCBUILD_Test_BruteForce`, scoped to 1 host) produced 228 alerts on Jul 8, 285 on Jul 10, and about 286 to 293 alerts per day from Jul 12 to 15, 2026. Separately counted, the queue took 316 Jira cases. That buried real signal until the rule was paused. The card adds controls intended to prevent a repeat:
 
 - **A threshold measured from a baseline**, placed inside the query. No threshold is approved from intuition alone.
 - **One result row per subject that needs review.** Separately, all rows from one run are grouped into a single alert. These are different layers, so the card requires checking that the alert, entities and ticket preserve every affected subject.
 - **A routing boundary**: test rules are named SOC-TEST and stay out of the Jira case-creation route. Only the named release authority changes them to SOC-BUILD.
 - **A queue-capacity check**: 3 to 5 alerts per rule per day, retune above 10.
+
+One unthresholded test rule produced hundreds of alerts per day in July. Rules built under the card run at 1 to 9 alerts per rule per day (17 alerts across 6 rules, 2026-09-25 to 09-26 UTC, 09-26 partial). The two periods are not a controlled comparison.
 
 The full story is [case study 01 in cyber-range-soc](https://github.com/jennafrank/cyber-range-soc/blob/main/docs/case-studies/01-queue-flood-316-cases.md). Every local rule in the card and where it came from is in [docs/why-each-rule-exists.md](docs/why-each-rule-exists.md).
 

@@ -2,7 +2,7 @@
 //
 // DETECTION QUERY (deployed rule SOC-BUILD-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003)
 // Recovered 2026-09-25 and reproduced verbatim below.
-// Version reference: [FILL IN]
+// Version reference: not recorded at build time.
 // Rule settings supply the window: runs every 1 hour over the previous 1 hour.
 //
 // Observations from the v3 conformance review:

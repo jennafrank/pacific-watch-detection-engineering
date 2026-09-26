@@ -14,9 +14,9 @@ The rule counts **per host**, not per source. Source addresses are context in th
 | 11:00 | 37 |
 | Baseline | 1 to 4 per hour |
 
-- **Spike date:** [FILL IN]
-- **Baseline dates, scope and query:** [FILL IN]
-- **Count distribution:** [FILL IN]
+- **Spike date:** Not recorded at build time.
+- **Baseline dates, scope and query:** Not recorded at build time.
+- **Count distribution:** Not recorded at build time.
 
 The spike hours sat roughly an order of magnitude above the baseline. The threshold of 8 is above the baseline maximum (4) and well below both spike hours (33, 37).
 
@@ -30,11 +30,13 @@ These distinctions support a disposition; none of them is conclusive on its own.
 | In-VNet Tenable scan engine | Source resolves to the scanner | Playbook Block 9 (2026-07-12) |
 | A participant's own lab activity | Source internal to the VNet, resolves to the owner's second VM, owner confirms | Playbook Block 6 |
 
-Before-and-after counts for each filter: [FILL IN]
+Before-and-after counts for each filter: Not recorded at build time.
 
 ## Observed alert volume
 
-16 alerts in 48 hours [FILL IN: which 48-hour window, in UTC] [CONFIRM: from this rule, not the password guessing rule]. That is about 8 per day: inside the card's 1 to 10 local review band, above the 3 to 5 per day workload target, and below the retune point of 10 per day. Reviewed outcomes for those 16 alerts are not recorded.
+This rule's observation window: Not recorded at build time.
+
+For rules built under the card generally, the measured volume is 17 alerts across 6 rules, 2026-09-25 to 09-26 UTC (09-26 partial). This rule is not among the six.
 
 ## First genuine detection
 

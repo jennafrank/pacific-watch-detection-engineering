@@ -44,7 +44,7 @@ All four checks are answerable from the Alert Case description. Do not open Sent
 Both queries are scoped to the case: the affected host and an explicit time window. The rule counts per host, so there may be several sources; the queries return all of them. Set the `let` values from the Alert Case before running.
 
 **Query A: confirm the pattern on this host, by source.**
-Test date and observed result: [FILL IN, not yet run]
+Test date and observed result: Not yet run.
 
 ```kql
 let CaseHost    = "linux-target-1";               // DeviceName is an FQDN; match with startswith
@@ -66,7 +66,7 @@ DeviceLogonEvents
 
 **Query B: did any logon succeed on this host after the attempts began?**
 Returns successes from any of the attempting sources, and successes from **any** source on an account that was tried, from the first failure to the end of the review window.
-Test date and observed result: [FILL IN, not yet run]
+Test date and observed result: Not yet run.
 
 ```kql
 let CaseHost    = "linux-target-1";

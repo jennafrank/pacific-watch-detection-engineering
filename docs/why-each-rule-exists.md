@@ -24,7 +24,7 @@ Every local rule in the [Detection Build Card](../card/detection-build-card.md) 
 
 ## 4. Test rules stay out of Jira: SOC-TEST vs SOC-BUILD
 
-**What happened:** unthresholded test rules reached the case queue. Alert volume ran at roughly 286 to 293 per day from Jul 12 to 15, 2026, and produced 316 Jira cases. See [case study 01](https://github.com/jennafrank/cyber-range-soc/blob/main/docs/case-studies/01-queue-flood-316-cases.md).
+**What happened:** an unthresholded test rule (`SOCBUILD_Test_BruteForce`, 1 host) reached the case queue. Alerts: 228 on Jul 8, 285 on Jul 10, and about 286 to 293 per day from Jul 12 to 15, 2026. Jira cases: 316 in total. The rule was paused. See [case study 01](https://github.com/jennafrank/cyber-range-soc/blob/main/docs/case-studies/01-queue-flood-316-cases.md).
 
 **How the card prevents it:** section 05 keeps every test rule outside the Jira case-creation route. Test rules use SOC-TEST in both the rule name and alert title, and the builder verifies that no Jira case is created. Section 06 lets only the named release authority change SOC-TEST to SOC-BUILD, after at least 48 hours of observation.
 

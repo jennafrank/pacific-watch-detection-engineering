@@ -49,7 +49,8 @@
 | Setting | Value |
 |---|---|
 | Schedule and lookback | Every 1 hour, previous 1 hour |
-| Behavior threshold | 8 or more distinct accounts per hour |
+| Behavior threshold | 8 or more distinct accounts per hour (`Accounts >= 8` in the deployed query, recovered 2026-09-25). Alerts below the documented threshold on Jul 18 to 19; cause not recorded. |
+| Alert threshold (Sentinel setting) | Greater than 0 |
 | Event grouping | Single alert |
 | Incident alert grouping | Host, within 5 hours |
 | Entities | Host (DeviceName); IP (`TopSource`, the first element of `SourceList`; not necessarily the most frequent source) |

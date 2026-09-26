@@ -12,7 +12,7 @@ Every local rule in the [Detection Build Card](../card/detection-build-card.md) 
 
 ## 2. The threshold sits inside the query, measured from a baseline
 
-**What happened:** the first password spray rule was backtested against a known spike: 33 and 37 distinct accounts in the spike hours, against a baseline of 1 to 4 per hour. That measurement set the threshold at 8 or more distinct accounts per hour.
+**What happened:** the first password spray rule was backtested against a known spike: 33 and 37 distinct accounts in the spike hours, against a baseline of 1 to 4 per hour. That measurement set the threshold at 8 or more distinct accounts per hour. Alerts below the documented threshold on Jul 18 to 19; cause not recorded.
 
 **How the card prevents guessing:** section 04 requires running the measurement query without its threshold over a representative baseline, recording the distribution, and specifying the exact counted item, comparison, number, grouping and window. Section 05 puts the behavior threshold inside the query, with the rule firing on greater than 0 results. No threshold is approved from intuition alone.
 
@@ -24,7 +24,7 @@ Every local rule in the [Detection Build Card](../card/detection-build-card.md) 
 
 ## 4. Test rules stay out of Jira: SOC-TEST vs SOC-BUILD
 
-**What happened:** an unthresholded test rule (`SOCBUILD_Test_BruteForce`, 1 host) reached the case queue. Alerts: 228 on Jul 8, 285 on Jul 10, and about 286 to 293 per day from Jul 12 to 15, 2026. Jira cases: 316 in total. The rule was paused. See [case study 01](https://github.com/jennafrank/cyber-range-soc/blob/main/docs/case-studies/01-queue-flood-316-cases.md).
+**What happened:** an unthresholded test rule (`SOCBUILD_Test_BruteForce`, 1 host) reached the case queue. Alerts: 210 to 292 per day from Jul 8 to 15, 2026, 2,210 in total through Jul 16. Jira cases: 316 in total. The rule was paused. See [case study 01](https://github.com/jennafrank/cyber-range-soc/blob/main/docs/case-studies/01-queue-flood-316-cases.md).
 
 **How the card prevents it:** section 05 keeps every test rule outside the Jira case-creation route. Test rules use SOC-TEST in both the rule name and alert title, and the builder verifies that no Jira case is created. Section 06 lets only the named release authority change SOC-TEST to SOC-BUILD, after at least 48 hours of observation.
 

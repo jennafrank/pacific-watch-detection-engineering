@@ -10,11 +10,11 @@
 
 ## What this is
 
-This is the Detection Build Card (v3.0) that I wrote for Pacific Watch, an advisory-only SOC on a training cyber range, plus working templates and a worked example. The card is an operating template, not evidence that any detection has passed testing. The worked example grades my own first production rule against it.
+This is the Detection Build Card (v3.0) that I wrote for Pacific Watch, an advisory-only SOC on a training cyber range, plus working templates and a worked example. The card is an operating template, not evidence that any detection has passed testing. The worked example grades my own first production rule against it: 66 requirements, 19 met, 24 partially met, 3 not met, 20 not recorded.
 
 ## Worked example
 
-[PASSWORDSPRAY-ALWAYSONLINUX-T1110.003](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/) was the first production Pacific Watch detection, built in July 2026 under v2 of the card. It is presented as a **historical detection review with incomplete evidence**: the baseline dates and test evidence are missing (the deployed query was recovered during the review), and the [v3 conformance review](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/v3-conformance-review.md) says so rather than filling the gaps. The review grades 65 requirements (18 met, 25 partially met, 2 not met, 20 not recorded) and found defects in my own playbook and query. The historical version stays as it was; a [corrected draft](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/PB-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003-v2.md) and a [record of what changed and why](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/README.md#what-changed-from-v1-to-v2) sit beside it. The retest is still to come.
+[PASSWORDSPRAY-ALWAYSONLINUX-T1110.003](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/) was the first production Pacific Watch detection, built in July 2026 under v2 of the card. It is presented as a **historical detection review with incomplete evidence**: the baseline dates and test evidence are missing (the deployed query was recovered during the review), and the [v3 conformance review](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/v3-conformance-review.md) says so rather than filling the gaps. The review grades 66 requirements (19 met, 24 partially met, 3 not met, 20 not recorded) and found defects in my own playbook and query. The historical version stays as it was; a [corrected draft](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/PB-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003-v2.md) and a [record of what changed and why](examples/PASSWORDSPRAY-ALWAYSONLINUX-T1110.003/README.md#what-changed-from-v1-to-v2) sit beside it. The retest is still to come.
 
 ## The lifecycle
 
@@ -42,7 +42,7 @@ flowchart TD
 
 ## Why it exists
 
-One unthresholded test rule (`SOCBUILD_Test_BruteForce`, scoped to 1 host) produced 228 alerts on Jul 8, 285 on Jul 10, and about 286 to 293 alerts per day from Jul 12 to 15, 2026. Separately counted, the queue took 316 Jira cases. That buried real signal until the rule was paused. The card adds controls intended to prevent a repeat:
+One unthresholded test rule (`SOCBUILD_Test_BruteForce`, scoped to 1 host) produced 210 to 292 alerts per day from Jul 8 to 15, 2026, 2,210 in total through Jul 16. Separately counted, the queue took 316 Jira cases. That buried real signal until the rule was paused. The card adds controls intended to prevent a repeat:
 
 - **A threshold measured from a baseline**, placed inside the query. No threshold is approved from intuition alone.
 - **One result row per subject that needs review.** Separately, all rows from one run are grouped into a single alert. These are different layers, so the card requires checking that the alert, entities and ticket preserve every affected subject.

@@ -62,7 +62,8 @@ This is a **historical detection review with incomplete evidence**. The rule was
 | Requirement | Grade | Evidence |
 |---|---|---|
 | Schedule every 1 hour, lookback 1 hour | Met | Rule facts. |
-| Alert threshold greater than 0, behavior threshold inside the query | Partially met | The behavior threshold (`Accounts >= 8`) is inside the query. The rule's alert threshold setting is not recorded. |
+| Alert threshold greater than 0, behavior threshold inside the query | Met | Sentinel's alert threshold is greater than 0, and the behavior threshold (`Accounts >= 8`) is inside the deployed query, as recovered 2026-09-25. |
+| Alerts consistent with the documented threshold | Not met | Alerts below the documented threshold on Jul 18 to 19; cause not recorded. The spray rule alerted at 2 and 3 distinct accounts on those days. |
 | Event grouping: single alert | Met | Rule facts. |
 | Suppression off | Not recorded | |
 | Incident creation enabled; test incidents do not create Jira cases | Partially met | Incidents are created. Test incidents were kept out of Jira by leaving the Logic App disconnected during the bake, not by SOC-TEST naming. |
@@ -149,17 +150,17 @@ Not graded above; recorded here as open findings so they are not hidden. 17 aler
 
 | Grade | Count |
 |---|---|
-| Met | 18 |
-| Partially met | 25 |
-| Not met | 2 |
+| Met | 19 |
+| Partially met | 24 |
+| Not met | 3 |
 | Not recorded | 20 |
-| **Total requirements graded** | **65** |
+| **Total requirements graded** | **66** |
 
 What the record does show: the rule was scoped to a named always-on asset, built on the table that actually carries this data, and set from a measured spike. The recovered query follows the local query rules and returns one row per host, but maps its IP entity to an arbitrary source, caps its evidence lists at 20 without recording it, and has no scanner exclusion. What the record cannot show is whether the rule works as intended, because the baseline dates and test evidence are missing. The review also found defects in the analyst guidance: verification queries that do not isolate the case, an inaccurate statement of Query B's limits, conflicting promotion instructions, and a spraying conclusion stated more firmly than the evidence allows. [Playbook v2](PB-PASSWORDSPRAY-ALWAYSONLINUX-T1110.003-v2.md) is a draft correction; it has not been retested.
 
 ## Changes required before this rule would pass v3
 
-1. **Recover the rest of the evidence first.** The deployed query is recovered (2026-09-25). Still missing: a version reference for it, the backtest spike date, and the baseline dates, scope, query and count distribution. Until these exist, this stays a historical review.
+1. **Recover the rest of the evidence first.** The deployed query is recovered (2026-09-25). Still missing: the query version in effect on Jul 18 to 19 (when alerts fired below the documented threshold; cause not recorded), a version reference for it, the backtest spike date, and the baseline dates, scope, query and count distribution. Until these exist, this stays a historical review.
 2. **Fix the query findings.** Make `TopSource` the most frequent source (for example with `arg_max` over a per-source count) or rename and explain it; record the 20-entry list cap or raise it; decide the scanner and private-source exclusion with before-and-after counts; exclude empty `AccountName` values.
 3. **Apply the promotion policy**: Block 7 governs, so any external spray against a Tier A host promotes, regardless of success. Playbook v2 aligns Block 4 to it, and records this Tier A host as an exception to the Charter §14.2 Campaign rule.
 4. **Run and record the corrected verification queries** from playbook v2, scoped to the case host and time window, with test date and observed result.

@@ -4,7 +4,7 @@
 
 ## The behavior
 
-The rule watches `linux-target-1`, an always-on instructor Linux host, for 8 or more distinct accounts in failed logons in one hour in `DeviceLogonEvents`. Many accounts with few attempts each is consistent with password spraying (T1110.003), which MITRE describes as trying one password or a small set across many accounts. The pattern supports that reading; it does not prove it.
+The rule watches `linux-target-1`, an always-on instructor Linux host, for 8 or more distinct accounts in failed logons in one hour in `DeviceLogonEvents` (per the deployed query recovered 2026-09-25). Alerts below the documented threshold on Jul 18 to 19; cause not recorded. Many accounts with few attempts each is consistent with password spraying (T1110.003), which MITRE describes as trying one password or a small set across many accounts. The pattern supports that reading; it does not prove it.
 
 ## Available evidence
 
@@ -21,7 +21,7 @@ The rule watches `linux-target-1`, an always-on instructor Linux host, for 8 or 
 
 ## Findings
 
-The [v3 conformance review](v3-conformance-review.md) grades 65 requirements: 18 met, 25 partially met, 2 not met, 20 not recorded. The two not met are the shortened observation period and the incomplete register. Reading the recovered query found four more issues: the IP entity maps to an arbitrary source (`SourceList[0]`), the evidence lists are capped at 20 without recording it, there is no scanner or private-source exclusion, and empty account names are not filtered. The review also found five defects in the v1 playbook:
+The [v3 conformance review](v3-conformance-review.md) grades 66 requirements: 19 met, 24 partially met, 3 not met, 20 not recorded. The three not met are the shortened observation period, the incomplete register, and alerts below the documented threshold on Jul 18 to 19 (cause not recorded). Reading the recovered query found four more issues: the IP entity maps to an arbitrary source (`SourceList[0]`), the evidence lists are capped at 20 without recording it, there is no scanner or private-source exclusion, and empty account names are not filtered. The review also found five defects in the v1 playbook:
 
 1. **Query B's stated limit was wrong.** It filters on `Successes > 0` with no requirement for preceding failures, so it can return successes without failures. What it cannot establish is how credentials were obtained or whether a success was malicious.
 2. **The verification queries did not isolate the case.** Both aggregated seven days by source IP across every host, so unrelated hosts and accounts could combine, and Query B did not check that a success followed the attempts.

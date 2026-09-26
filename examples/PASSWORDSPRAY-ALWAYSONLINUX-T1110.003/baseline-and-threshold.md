@@ -2,7 +2,14 @@
 
 ## Trigger
 
-Alert when `linux-target-1` records **8 or more distinct accounts** in **failed logons** in **one hour** (`Accounts >= 8` in the [deployed query](query.kql)). The rule runs every hour over the previous hour.
+Alert when `linux-target-1` records **8 or more distinct accounts** in **failed logons** in **one hour** (`Accounts >= 8` in the [deployed query](query.kql)). Sentinel's alert threshold is set to greater than 0 results, so the query carries the behavior threshold.
+
+| Date | Threshold in effect |
+|---|---|
+| Current, per the deployed query recovered 2026-09-25 | `Accounts >= 8` |
+| Jul 18 to 19, 2026 | Alerts below the documented threshold on Jul 18 to 19; cause not recorded. The spray rule alerted at 2 and 3 distinct accounts during this period. |
+
+The rule runs every hour over the previous hour.
 
 The rule counts **per host**, not per source. Source addresses are context in the alert (custom details carry attempts, distinct accounts and source addresses), not the grouping key. Playbook v1 described the trigger per source IP; v2 corrects it.
 

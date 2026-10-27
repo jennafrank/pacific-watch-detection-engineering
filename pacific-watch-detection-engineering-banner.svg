@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="190" viewBox="0 0 1280 190" role="img" aria-labelledby="t d">
+  <title id="t">Pacific Watch Detection Engineering</title>
+  <desc id="d">Detection Build Card: a research-to-release standard for Pacific Watch detections. 66 requirements: 19 met, 24 partial, 3 not met, 20 not recorded.</desc>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ec3b8d" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#ec3b8d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="scan" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#ec3b8d" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ec3b8d" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#ec3b8d" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="blur" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <clipPath id="card"><rect x="1" y="1" width="1278" height="188" rx="6"/></clipPath>
+  </defs>
+
+  <style>
+    .mono { font-family: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+    .cursor { animation: blink 1.1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .node { animation: pulse 4s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+  </style>
+
+  <!-- card -->
+  <rect x="1" y="1" width="1278" height="188" rx="6" fill="#0d1117"/>
+  <g clip-path="url(#card)">
+    <ellipse cx="640" cy="95" rx="420" ry="110" fill="url(#glow)"/>
+
+    <g transform="translate(-22 0)">
+    <!-- left: research -> build -> test -> release -->
+    <g stroke="#7a3a62" stroke-width="1.5" fill="none">
+      <path d="M118 88 H152" stroke-dasharray="3 4"/>
+      <path d="M198 88 H232" stroke-dasharray="3 4"/>
+      <path d="M278 88 H312" stroke-dasharray="3 4"/>
+    </g>
+    <g class="node" stroke="#ec3b8d" stroke-width="1.6" fill="#161b24">
+      <rect x="76" y="70" width="42" height="36" rx="6"/>
+      <rect x="156" y="70" width="42" height="36" rx="6"/>
+      <rect x="236" y="70" width="42" height="36" rx="6"/>
+    </g>
+    <!-- release node: lit -->
+    <rect x="316" y="70" width="42" height="36" rx="6" fill="#3a1330" stroke="#ff5fae" stroke-width="2"/>
+    <!-- glyphs -->
+    <g stroke="#ff5fae" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="95" cy="86" r="6"/><path d="M99.5 90.5 L105 96"/>
+      <path d="M174 82 L168 88 L174 94 M180 82 L186 88 L180 94"/>
+      <path d="M250 88 L256 94 L266 82"/>
+      <circle cx="337" cy="88" r="9"/><circle cx="337" cy="88" r="3.5" fill="#ff5fae"/>
+    </g>
+    <g class="mono" font-size="9" fill="#8c4a73" text-anchor="middle" letter-spacing="1">
+      <text x="97" y="126">research</text>
+      <text x="177" y="126">build</text>
+      <text x="257" y="126">test</text>
+      <text x="337" y="126" fill="#c2569a">release</text>
+    </g>
+    <!-- traveling signal -->
+    <circle r="3.5" fill="#ff8ac4">
+      <animateMotion dur="4s" repeatCount="indefinite" path="M97 88 H337"/>
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.92;1" dur="4s" repeatCount="indefinite"/>
+    </circle>
+
+    </g>
+
+    <!-- center title -->
+    <g class="mono" text-anchor="middle">
+      <text x="640" y="82" font-size="27" font-weight="700" letter-spacing="6" fill="#ec3b8d" filter="url(#blur)" opacity="0.55">DETECTION ENGINEERING</text>
+      <text x="640" y="82" font-size="27" font-weight="700" letter-spacing="6" fill="#f25aa5">DETECTION ENGINEERING</text>
+      <text x="640" y="110" font-size="13" letter-spacing="2" fill="#a8b0bf">Pacific Watch  ·  Detection Build Card</text>
+      <text x="640" y="140" font-size="11" letter-spacing="0.8" fill="#6e7787">66 requirements  ·  19 met  ·  24 partial  ·  3 not met  ·  20 not recorded</text>
+    </g>
+
+    <!-- right: faded KQL -->
+    <g class="mono" font-size="11" fill="#8c4a73" opacity="0.55">
+      <text x="968" y="62">Detection</text>
+      <text x="968" y="80">| where Timestamp &gt; ago(1d)</text>
+      <text x="968" y="98">| where Signal == true</text>
+      <text x="968" y="116">| summarize hits = count()</text>
+      <text x="968" y="134">| where hits &gt;= threshold<tspan class="cursor"> _</tspan></text>
+    </g>
+    <text class="mono" x="1246" y="174" font-size="13" letter-spacing="2" fill="#ec3b8d" opacity="0.22" text-anchor="end">build card v2</text>
+
+    <!-- slow scan sweep -->
+    <rect x="-120" y="0" width="120" height="190" fill="url(#scan)">
+      <animate attributeName="x" from="-120" to="1280" dur="9s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  <rect x="1" y="1" width="1278" height="188" rx="6" fill="none" stroke="#4a2142" stroke-width="1.5"/>
+</svg>

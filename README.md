@@ -1,3 +1,5 @@
+![Pacific Watch Detection Engineering](/pacific-watch-detection-engineering-banner.svg)
+
 # Pacific Watch Detection Engineering
 
 **The operating standard every Pacific Watch detection follows, from research to release to maintenance.**
